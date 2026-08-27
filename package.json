@@ -1,0 +1,22 @@
+{
+  "name": "openbudget-bot",
+  "version": "1.0.0",
+  "description": "Telegram bot for OpenBudget with referrals and vote tracking",
+  "main": "src/index.ts",
+  "scripts": {
+    "start": "ts-node src/index.ts",
+    "dev": "ts-node src/index.ts",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@grammyjs/conversations": "^1.2.0",
+    "@supabase/supabase-js": "^2.112.4",
+    "dotenv": "^16.6.1",
+    "grammy": "^1.46.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.16",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  }
+}

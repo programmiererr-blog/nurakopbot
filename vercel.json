@@ -8,7 +8,7 @@
   ],
   "routes": [
     {
-      "src": "https://nurakopbot-xo1n.vercel.app/api/webhook",
+      "src": "/api/webhook",
       "dest": "src/index.ts"
     }
   ]

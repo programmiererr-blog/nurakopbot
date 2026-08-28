@@ -103,6 +103,7 @@ bot.use(createConversation(withdrawConversation));
 bot.use(createConversation(proofConversation));
 
 import { updateEnvVariable } from '../utils/envUpdater';
+import { updateSetting } from '../database';
 
 export async function settingsConversation(conversation: MyConversation, ctx: MyContext) {
   if (ctx.from?.id !== ENV.ADMIN_ID) return;
@@ -126,7 +127,25 @@ export async function settingsConversation(conversation: MyConversation, ctx: My
   await ctx.reply(`Muvaffaqiyatli o'zgartirildi: ${key} = ${newValue}`);
 }
 
+export async function aksiyaConversation(conversation: MyConversation, ctx: MyContext) {
+  if (ctx.from?.id !== ENV.ADMIN_ID) return;
+  
+  await ctx.reply("Aksiyalar uchun yangi matnni yuboring (HTML format ishlata olasiz):", {
+    reply_markup: { remove_keyboard: true }
+  });
+  
+  const { message } = await conversation.waitFor('message:text');
+  if (!message || !message.text) {
+    await ctx.reply("Matn kiritilmadi. Bekor qilindi.", { reply_markup: mainKeyboard });
+    return;
+  }
+  
+  await conversation.external(() => updateSetting('aksiyalar_text', message.text!));
+  await ctx.reply("Aksiyalar matni muvaffaqiyatli yangilandi!", { reply_markup: mainKeyboard });
+}
+
 bot.use(createConversation(settingsConversation));
+bot.use(createConversation(aksiyaConversation));
 
 bot.callbackQuery(/^settings_(.+)$/, async (ctx) => {
   if (ctx.from?.id !== ENV.ADMIN_ID) return;

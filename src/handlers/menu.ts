@@ -1,6 +1,7 @@
 import { bot } from '../bot';
-import { getUser, getReferralsCount } from '../database';
+import { getUser, getReferralsCount, getSetting } from '../database';
 import { mainKeyboard, voteInlineKeyboard } from '../menus';
+import { InlineKeyboard } from 'grammy';
 
 bot.hears('🗳 Ovoz berish', async (ctx) => {
   await ctx.reply("Ovoz berish uchun quyidagi tugmani bosing va OpenBudget botiga o'ting:\n\nQo'llanma: Botga kirgach, raqamingizni yuboring va ovoz bering.", {
@@ -29,10 +30,9 @@ bot.hears('💰 Balans', async (ctx) => {
 });
 
 bot.hears('🎉 Aksiyalar', async (ctx) => {
-  await ctx.reply("Hozirda quyidagi aksiyalar mavjud: ..."); // Add your promo text here
+  const aksiyalarText = await getSetting('aksiyalar_text', "Hozirda hech qanday yangilik yoki aksiya yo'q.");
+  await ctx.reply(aksiyalarText, { parse_mode: 'HTML' });
 });
-
-import { InlineKeyboard } from 'grammy';
 
 bot.hears("💸 To'lovlar isboti", async (ctx) => {
   const inlineKb = new InlineKeyboard()

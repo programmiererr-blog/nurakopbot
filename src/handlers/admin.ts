@@ -133,11 +133,12 @@ bot.command('admin', async (ctx) => {
   const { count: votedCount } = await supabase.from('users').select('*', { count: 'exact', head: true }).eq('is_voted', true);
   
   await ctx.reply(
-    `📊 <b>Admin Statistika</b>\n\n` +
+    `👨‍💻 <b>Admin Statistika</b>\n\n` +
     `👥 Jami foydalanuvchilar: ${usersCount || 0}\n` +
     `✅ Ovoz berganlar: ${votedCount || 0}\n\n` +
     `Xabar yuborish uchun: /broadcast xabar matni\n` +
-    `Sozlamalarni o'zgartirish uchun: /settings`,
+    `Sozlamalarni o'zgartirish uchun: /settings\n` +
+    `Aksiyalar tugmasi matnini o'zgartirish: /setaksiya`,
     { parse_mode: 'HTML' }
   );
 });
@@ -186,4 +187,9 @@ bot.command('setchannel', async (ctx) => {
   }
   updateEnvVariable('PAYMENT_CHANNEL_ID', channelId);
   await ctx.reply(`✅ Kanal muvaffaqiyatli saqlandi: ${channelId}\n\nEndi to'lovlar tasdiqlanganda ushbu kanalga avtomatik xabar yuboriladi.`);
+});
+
+bot.command('setaksiya', async (ctx) => {
+  if (ctx.from?.id !== ENV.ADMIN_ID) return;
+  await ctx.conversation.enter('aksiyaConversation');
 });

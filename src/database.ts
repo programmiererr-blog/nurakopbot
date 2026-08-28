@@ -50,3 +50,13 @@ export async function getNotifiableAdmins(permission: 'can_approve_proofs' | 'ca
   }
   return Array.from(ids);
 }
+
+export async function getSetting(key: string, defaultValue: string = ''): Promise<string> {
+  const { data } = await supabase.from('settings').select('value').eq('key', key).single();
+  return data ? data.value : defaultValue;
+}
+
+export async function updateSetting(key: string, value: string) {
+  const { error } = await supabase.from('settings').upsert({ key, value });
+  if (error) console.error("Error updating setting:", error);
+}

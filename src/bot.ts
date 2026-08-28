@@ -1,5 +1,8 @@
 import { Bot, Context, session, SessionFlavor } from 'grammy';
 import { type ConversationFlavor, conversations } from '@grammyjs/conversations';
+// @ts-ignore
+import { supabaseAdapter } from '@grammyjs/storage-supabase';
+import { supabase } from './database';
 import { ENV } from './config';
 
 export interface SessionData {
@@ -14,5 +17,16 @@ if (!ENV.BOT_TOKEN) {
 
 export const bot = new Bot<MyContext>(ENV.BOT_TOKEN);
 
-bot.use(session({ initial: () => ({}) }));
+// Bot qotmasligi, serverless (Vercel) muhitda yoki qayta ishga tushganda 
+// userlarning kiritayotgan ma'lumotlari (conversation) o'chib ketmasligi uchun Supabase storage
+bot.use(
+  session({
+    initial: () => ({}),
+    storage: supabaseAdapter({
+      supabase,
+      table: 'sessions', // Supabase'dagi jadval
+    }),
+  })
+);
+
 bot.use(conversations());

@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@grammyjs/conversations": "^1.2.0",
+    "@grammyjs/storage-supabase": "^2.6.0",
     "@supabase/supabase-js": "^2.112.4",
     "dotenv": "^16.6.1",
     "grammy": "^1.46.0"
